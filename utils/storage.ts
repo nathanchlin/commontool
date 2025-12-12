@@ -4,6 +4,8 @@
 
 const STORAGE_KEYS = {
   MEETING_NOTES: 'meetingNotes',
+  DEV_LOGS: 'devLogs',
+  WECHAT_CONFIG: 'wechatConfig',
 } as const
 
 /**

@@ -1,12 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FileText, Plus, Save, Trash2, Calendar, Users, Clock } from 'lucide-react'
+import { FileText, Plus, Save, Trash2, Calendar, Users, Clock, Code, Sparkles } from 'lucide-react'
 import MeetingNotes from '@/components/MeetingNotes'
+import DevLogs from '@/components/DevLogs'
 import type { MeetingNote } from '@/types'
 import { getFromStorage, saveToStorage, STORAGE_KEYS } from '@/utils/storage'
 
+type ToolTab = 'meeting' | 'devlog'
+
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<ToolTab>('meeting')
   const [notes, setNotes] = useState<MeetingNote[]>([])
   const [selectedNote, setSelectedNote] = useState<MeetingNote | null>(null)
   const [showNewNote, setShowNewNote] = useState(false)
@@ -70,6 +74,11 @@ export default function Home() {
     setShowNewNote(true)
   }
 
+  // 如果是研发日志，直接显示 DevLogs 组件
+  if (activeTab === 'devlog') {
+    return <DevLogs />
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
@@ -78,6 +87,32 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-gray-800 mb-2">工作工具平台</h1>
           <p className="text-gray-600">整合工作开发工具，提升工作效率</p>
         </header>
+
+        {/* 工具切换标签 */}
+        <div className="mb-6 flex gap-2">
+          <button
+            onClick={() => setActiveTab('meeting')}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+              activeTab === 'meeting'
+                ? 'bg-primary-600 text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <FileText className="w-5 h-5" />
+            会议纪要
+          </button>
+          <button
+            onClick={() => setActiveTab('devlog')}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+              activeTab === 'devlog'
+                ? 'bg-primary-600 text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Sparkles className="w-5 h-5" />
+            研发日志
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* 左侧：工具列表 */}

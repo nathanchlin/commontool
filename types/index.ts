@@ -30,3 +30,56 @@ export interface ApiResponse<T = any> {
   message?: string
   error?: string
 }
+
+/**
+ * 研发日志类型定义
+ */
+export type DevLogType = 'task' | 'bug' | 'meeting' | 'progress' | 'other'
+
+export interface DevLog {
+  id: string
+  date: string
+  project?: string
+  type: DevLogType
+  title: string
+  participants: string[]
+  content: string
+  status?: string
+  priority?: 'high' | 'medium' | 'low'
+  tags?: string[]
+  relatedMessages?: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+/**
+ * 企业微信消息类型
+ */
+export interface WeChatMessage {
+  id: string
+  msgid: string
+  from: {
+    userid: string
+    name?: string
+  }
+  roomid?: string
+  content: string
+  msgtype: string
+  time: number
+  raw?: any
+}
+
+/**
+ * AI 提取结果类型
+ */
+export interface AIExtractResult {
+  project?: string
+  type: DevLogType
+  title: string
+  participants: string[]
+  content: string
+  status?: string
+  priority?: 'high' | 'medium' | 'low'
+  tags?: string[]
+  summary?: string
+}
