@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import type { DevLog, DevLogType, WeChatMessage } from '@/types'
 import { getFromStorage, saveToStorage, STORAGE_KEYS } from '@/utils/storage'
+import WeChatConfig from './WeChatConfig'
 
 interface DevLogsProps {
   onClose?: () => void
@@ -44,6 +45,7 @@ export default function DevLogs({ onClose }: DevLogsProps) {
   const [isExtracting, setIsExtracting] = useState(false)
   const [filterType, setFilterType] = useState<DevLogType | 'all'>('all')
   const [filterProject, setFilterProject] = useState<string>('')
+  const [showConfig, setShowConfig] = useState(false)
 
   // 从 localStorage 加载数据
   useEffect(() => {
@@ -189,6 +191,13 @@ export default function DevLogs({ onClose }: DevLogsProps) {
             </div>
             <div className="flex gap-2">
               <button
+                onClick={() => setShowConfig(true)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+              >
+                <Settings className="w-4 h-4" />
+                配置
+              </button>
+              <button
                 onClick={() => setShowImport(true)}
                 className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
               >
@@ -302,7 +311,9 @@ export default function DevLogs({ onClose }: DevLogsProps) {
 
           {/* 右侧：编辑区域 */}
           <div className="lg:col-span-2">
-            {showImport ? (
+            {showConfig ? (
+              <WeChatConfig onClose={() => setShowConfig(false)} />
+            ) : showImport ? (
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-primary-600" />
@@ -528,4 +539,5 @@ function LogEditor({ log, onSave, onCancel }: LogEditorProps) {
     </div>
   )
 }
+
 

@@ -89,21 +89,44 @@ ${content}
 }
 ```
 
+### 配置方式
+
+企业微信配置支持两种方式，按优先级从高到低：
+
+1. **环境变量配置**（推荐用于生产环境）
+   - 创建 `.env.local` 文件（参考 `.env.local.example`）
+   - 配置项会自动加载，无需在前端配置
+
+2. **前端配置界面**（推荐用于开发测试）
+   - 在研发日志页面点击「配置」按钮
+   - 配置信息保存在浏览器 localStorage
+   - 适合快速测试和开发
+
 ### 环境变量配置
 
-创建 `.env.local` 文件：
+创建 `.env.local` 文件（参考 `.env.local.example`）：
 
 ```env
-# OpenAI API
-OPENAI_API_KEY=your-openai-api-key
-
-# 企业微信配置（可选，也可以在前端配置）
+# 企业微信配置
 WECHAT_CORP_ID=your-corp-id
 WECHAT_AGENT_ID=your-agent-id
 WECHAT_SECRET=your-secret
 WECHAT_TOKEN=your-token
 WECHAT_ENCODING_AES_KEY=your-encoding-aes-key
+WECHAT_ENABLED=true
+
+# AI API 配置（可选）
+OPENAI_API_KEY=your-openai-api-key
 ```
+
+### 前端配置
+
+1. 打开研发日志页面
+2. 点击右上角「配置」按钮
+3. 填写企业微信配置信息
+4. 点击「保存配置」
+
+配置会自动保存到浏览器本地存储，下次打开会自动加载。
 
 ## 开发测试
 
@@ -139,4 +162,5 @@ ngrok http 3000
    - 注意 AI API 的调用频率限制
    - 企业微信 API 也有调用频率限制
    - 建议实现缓存和重试机制
+
 

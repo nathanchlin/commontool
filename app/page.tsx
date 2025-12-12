@@ -74,11 +74,6 @@ export default function Home() {
     setShowNewNote(true)
   }
 
-  // 如果是研发日志，直接显示 DevLogs 组件
-  if (activeTab === 'devlog') {
-    return <DevLogs />
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
@@ -113,6 +108,11 @@ export default function Home() {
             研发日志
           </button>
         </div>
+
+        {/* 根据选中的标签显示不同内容 */}
+        {activeTab === 'devlog' ? (
+          <DevLogs />
+        ) : (
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* 左侧：工具列表 */}
@@ -198,6 +198,7 @@ export default function Home() {
             )}
           </div>
         </div>
+        )}
       </div>
     </div>
   )

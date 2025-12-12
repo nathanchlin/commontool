@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type { WeChatMessage, ApiResponse } from '@/types'
+import { getWeChatConfig, validateWeChatConfig } from '@/config/wechat.config'
 
 /**
  * 企业微信 Webhook 接收接口
@@ -16,9 +17,6 @@ export async function GET(request: NextRequest) {
     const nonce = searchParams.get('nonce')
     const echostr = searchParams.get('echostr')
 
-    // TODO: 实现消息验证逻辑
-    // 需要使用配置的 Token 和 EncodingAESKey 进行验证
-    
     if (!msgSignature || !timestamp || !nonce || !echostr) {
       return NextResponse.json<ApiResponse>({
         success: false,
@@ -26,12 +24,24 @@ export async function GET(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // 验证签名并返回 echostr
-    // 实际实现需要：
-    // 1. 验证签名
-    // 2. 解密 echostr
+    // 从配置文件读取配置
+    const config = getWeChatConfig()
+    const validation = validateWeChatConfig(config, true)
+    
+    if (!validation.valid) {
+      return NextResponse.json<ApiResponse>({
+        success: false,
+        error: `Webhook 配置不完整，缺少: ${validation.missing.join(', ')}`,
+      }, { status: 400 })
+    }
+
+    // TODO: 实现消息验证逻辑
+    // 需要使用配置的 Token 和 EncodingAESKey 进行验证
+    // 1. 验证签名（使用 config.token）
+    // 2. 解密 echostr（使用 config.encodingAESKey）
     // 3. 返回解密后的 echostr
 
+    // 当前简单返回 echostr（实际应该解密）
     return new NextResponse(echostr, { status: 200 })
   } catch (error: any) {
     console.error('Webhook verification error:', error)
@@ -46,10 +56,21 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    // TODO: 实现消息解密逻辑
-    // 企业微信发送的消息是加密的，需要使用 EncodingAESKey 解密
+    // 从配置文件读取配置
+    const config = getWeChatConfig()
+    const validation = validateWeChatConfig(config, true)
     
-    // 解析消息
+    if (!validation.valid) {
+      return NextResponse.json<ApiResponse>({
+        success: false,
+        error: `Webhook 配置不完整，缺少: ${validation.missing.join(', ')}`,
+      }, { status: 400 })
+    }
+    
+    // TODO: 实现消息解密逻辑
+    // 企业微信发送的消息是加密的，需要使用 config.encodingAESKey 解密
+    
+    // 解析消息（当前假设已解密，实际需要先解密）
     const message: WeChatMessage = {
       id: body.MsgId || Date.now().toString(),
       msgid: body.MsgId || '',
@@ -82,4 +103,5 @@ export async function POST(request: NextRequest) {
     }, { status: 500 })
   }
 }
+
 

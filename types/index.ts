@@ -83,3 +83,8 @@ export interface AIExtractResult {
   tags?: string[]
   summary?: string
 }
+
+/**
+ * 企业微信配置类型（导出供组件使用）
+ */
+export type { WeChatConfig } from '@/config/wechat.config'
