@@ -1,0 +1,18 @@
+=== 企业微信回调配置信息 ===
+
+📝 本地配置（.env.local）：
+WECHAT_TOKEN=WeChatToken1765871689
+WECHAT_ENCODING_AES_KEY=F2NqEm8yxqlGeN6fDb+5zdqxDaZDqrwXvCKpSL9h7W4
+
+📋 企业微信后台配置：
+回调 URL: https://clear-spoons-sort.loca.lt/api/wechat/webhook
+Token: WeChatToken1765871689
+EncodingAESKey: F2NqEm8yxqlGeN6fDb+5zdqxDaZDqrwXvCKpSL9h7W4
+
+⚠️  重要提示：
+1. 确保 .env.local 中的 Token 和 EncodingAESKey 与企业微信后台完全一致
+2. 更新配置后需要重启开发服务器：npm run dev
+3. 确保 localtunnel 正在运行
+4. 在企业微信后台保存配置后，会自动验证回调 URL
+
+📖 详细步骤请查看：docs/wechat-callback-setup.md
